@@ -1,56 +1,38 @@
+import endingError from "./error";
 import fixUndefined from "./undefined";
 import deleteUnused from "./unused";
+import fixUnitsData from "./units";
 
 const BASE_DIMENSIONS = {
   length: null,
   width: null,
   height: null,
-  'front track': null,
-  'rear track': null,
+  'front/rear track': null,
   wheelbase: null,
+  'ground clearance': null,
   'cargo volume': null,
-  'turning circle': null
+  'turning circle': null,
+  aerodynamics: null
 };
 
 const fixDimensionsData = (data: any) => {
-  if(data === null || data === undefined) return BASE_DIMENSIONS;
+  if(!data) return BASE_DIMENSIONS;
   fixUndefined(data, BASE_DIMENSIONS);
 
   data['length'] = fixUnitsData(data['length']);
   data['width'] = fixUnitsData(data['width']);
   data['height'] = fixUnitsData(data['height']);
+  data['front/rear track'] = fixUnitsData(data['front/rear track'], false);
   data['wheelbase'] = fixUnitsData(data['wheelbase']);
+  data['cargo volume'] = fixUnitsData(data['cargo volume']);
+  data['turning circle'] = fixUnitsData(data['turning circle']);
+  data['ground clearance'] = fixUnitsData(data['ground clearance']);
 
+  if(data['aerodynamics (cd)'])
+    data['aerodynamics'] = data['aerodynamics (cd)'];
 
-  // deleteUnused(data, BASE_DIMENSIONS);
+  deleteUnused(data, BASE_DIMENSIONS);
   return data;
 }
-
-const unitRegex = {
-  inch: /\d*\ in/g,
-  mili: /\d*\ mm/g,
-  foot: /\d*\ ft/g,
-  meter: /\b\d+\s*m\b(?!m)/g,
-  cuft: /\d*\ cuft/g,
-  litre: /\d*\ l/g,
-};
-
-const fixUnitsData = (text: string): string[] | null => {
-  if(text === null) return null;
-
-  const values:string[] = [];
-  
-  for(let regex of Object.values(unitRegex)) {
-    if(regex.test(text)) {
-      const matchedValue = text.match(regex)?.[0] || '';
-      values.push(matchedValue);
-    }
-  }
-
-  const error = !values.every((value:string) => value.endsWith(' in') || value.endsWith(' mm') || value.endsWith(' '));
-
-  return error ? null : values;
-}
-
 
 export default fixDimensionsData;

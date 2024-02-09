@@ -10,7 +10,7 @@ const BASE_TRANSMISSION = {
 };
 
 const fixTransmissionData = (data: any) => {
-  if (data === undefined || data === undefined) return BASE_TRANSMISSION;
+  if (!data) return BASE_TRANSMISSION;
   fixUndefined(data, BASE_TRANSMISSION);
 
   data["gearbox"] = fixGearBox(data["gearbox"]);
@@ -20,7 +20,7 @@ const fixTransmissionData = (data: any) => {
 };
 
 const fixGearBox = (text: string | null) => {
-  if (text === null) return null;
+  if (!text) return null;
 
   const geartype_regex =
     /(manual|automatic|continuously variable transmission|continuously variable|cvt|dual-clutch|dual-clutch transmission|dct|semi-automatic|semi-automatic transmission|automated manual|automated manual transmission|amt|tiptronic|tiptronic transmission|direct-shift|direct-shift gearbox|dsg|sequential manual|sequential|sequential manual transmission|smg|electrically variable|electrically|electrically variable transmission|evt)/i;

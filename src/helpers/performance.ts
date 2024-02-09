@@ -1,3 +1,4 @@
+import endingError from "./error";
 import fixUndefined from "./undefined";
 import deleteUnused from "./unused";
 
@@ -7,7 +8,7 @@ const BASE_PERFORMANCE = {
 }
 
 const fixPerformanceData = (data: any) => {
-  if(data === null || data === undefined) return BASE_PERFORMANCE;
+  if(!data) return BASE_PERFORMANCE;
   data = fixUndefined(data, BASE_PERFORMANCE);
   
   data['top speed'] = fixTopSpeed(data['top speed']);
@@ -19,7 +20,7 @@ const fixPerformanceData = (data: any) => {
 }
 
 const fixTopSpeed = (text: string | null): string[] | null => {
-  if(text === null) return null;
+  if(!text) return null;
   const kmh_regex = /\d+\ km\/h/g;
   const mph_regex = /\d+\ mph/g;
 
@@ -28,13 +29,13 @@ const fixTopSpeed = (text: string | null): string[] | null => {
 
   const values:string[] = [mph, kmh].filter(Boolean);
   
-  const error = !values.every((value: string) => value.endsWith('km/h') || value.endsWith('mph'));
+  const error = endingError(values, ["km/h", "mph"]);
 
   return error ? null : values;
 }
 
 const fixAcceleration = (text: string | null): string | null => {
-  if (text === null) return null;
+  if (!text) return null;
   
   const error = !/\d.\d+\ s|\d+\ s/g.test(text);
   return error ? null : text;

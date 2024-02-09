@@ -1,3 +1,4 @@
+import endingError from "./error";
 import fixUndefined from "./undefined";
 import deleteUnused from "./unused";
 
@@ -12,7 +13,7 @@ const BASE_ENGINE = {
 }
 
 const fixEngineData = (data: any) => {
-  if(data === null || data === undefined) return BASE_ENGINE;
+  if(!data) return BASE_ENGINE;
   data = fixUndefined(data, BASE_ENGINE);
 
   data["power"] = fixPower(data["power"]);
@@ -24,7 +25,7 @@ const fixEngineData = (data: any) => {
 };
 
 const fixPower = (text: string | null): string[] | null => {
-  if (text === null) return null;
+  if (!text) return null;
 
   const regex = / @ - rpm|@ -? ?\d+(?:-\d+)? rpm/gi;
   const values = text
@@ -32,15 +33,12 @@ const fixPower = (text: string | null): string[] | null => {
     .map((value: string) => value.trim())
     .filter(Boolean);
 
-  const error = !values?.every(
-    (value: string) =>
-      value.endsWith(" kw") || value.endsWith(" hp") || value.endsWith(" bhp")
-  );
+  const error = endingError(values, [" kw", " hp", " bhp"]);
   return error ? null : values;
 };
 
 const fixTorque = (text: string | null): string[] | null => {
-  if (text === null) return null;
+  if (!text) return null;
 
   const regex = / @ - rpm|@ -? ?\d+(?:-\d+)? rpm/gi;
   const values = text
@@ -48,21 +46,18 @@ const fixTorque = (text: string | null): string[] | null => {
     .map((value: string) => value.trim())
     .filter(Boolean);
 
-  const error = !values?.every(
-    (value: string) => value.endsWith(" lb-ft") || value.endsWith(" nm")
-  );
+  const error = endingError(values, [" lb-ft", " nm"]);
+
   return error ? null : values;
 };
 
 const fixFuelCapacity = (text: string | null): string[] | null => {
-  if (text === null) return null;
+  if (!text) return null;
   const litre = text.match(/(\d+\.\d+ l)/g)?.[0].replace("l", "litre") || "";
   const gallon = text.match(/\d+\.\d gallons/g)?.[0] || "";
   const values = [gallon, litre].filter(Boolean);
 
-  const error = !values?.every(
-    (value: string) => value.endsWith(" litre") || value.endsWith(" gallons")
-  );
+  const error = endingError(values, [" litre", " gallons"]);
 
   return error ? null : values;
 };

@@ -56,8 +56,7 @@ const scrape = async (url: string) => {
   data['description'] = null;
 
   console.log(data)
+  // console.log(data)
 }
 
-scrape('https://www.autoevolution.com/cars/volkswagen-touareg-2023.html#aeng_volkswagen-touareg-2023-30l-v6-4motion-8at-awd-340-hp');
-// scrape('https://www.autoevolution.com/cars/pagani-huayra-2012.html#aeng_pagani-huayra-2012-60-v12-7at-730-hp');
-// scrape('https://www.autoevolution.com/cars/audi-a4-2019.html#aeng_audi-a4-2019-35-tsfi-s-tronic-7at-150-hp')
+scrape('https://www.autoevolution.com/cars/audi-a4-2019.html#aeng_audi-a4-2019-35-tsfi-s-tronic-7at-150-hp');
