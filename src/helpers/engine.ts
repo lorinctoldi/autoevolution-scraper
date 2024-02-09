@@ -1,4 +1,5 @@
 import fixUndefined from "./undefined";
+import deleteUnused from "./unused";
 
 const BASE_ENGINE = {
   cylinders: null,
@@ -18,6 +19,7 @@ const fixEngineData = (data: any) => {
   data["torque"] = fixTorque(data["torque"]);
   data["fuel capacity"] = fixFuelCapacity(data["fuel capacity"]);
 
+  deleteUnused(data, BASE_ENGINE);
   return data;
 };
 

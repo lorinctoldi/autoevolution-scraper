@@ -36,7 +36,7 @@ const fixTopSpeed = (text: string | null): string[] | null => {
 const fixAcceleration = (text: string | null): string | null => {
   if (text === null) return null;
   
-  const error = !text.match(/\d.\d+\ s|\d+\ s/g);
+  const error = !/\d.\d+\ s|\d+\ s/g.test(text);
   return error ? null : text;
 }
 

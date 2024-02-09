@@ -3,6 +3,8 @@ import cheerio from "cheerio";
 
 import fixEngineData from "./helpers/engine";
 import fixPerformanceData from "./helpers/performance";
+import fixTransmissionData from "./helpers/transmission";
+import fixDimensionsData from "./helpers/dimension";
 
 const getData = async (url: string) => {
   try {
@@ -27,8 +29,8 @@ const getData = async (url: string) => {
         tableData['type'] = $(tableElement).find('.title div').text().split(' - ')[1].trim();
 
       $(tableElement).find('tr').each((rowIndex, rowElement) => {
-        const leftColumn = $(rowElement).find('.left').text().trim().replace(':','').toLowerCase();        // Get the text content of the left column
-        const rightColumn = $(rowElement).find('.right').text().trim().toLowerCase(); // Get the text content of the right column
+        const leftColumn = $(rowElement).find('.left').text().trim().replace(':','').toLowerCase();       
+        const rightColumn = $(rowElement).find('.right').text().trim().toLowerCase();
 
         if (leftColumn)
           tableData[leftColumn] = rightColumn;
@@ -48,7 +50,11 @@ const scrape = async (url: string) => {
 
   data['engine'] = fixEngineData(data['engine']);
   data['performance'] = fixPerformanceData(data['performance']);
+  data['transmission'] = fixTransmissionData(data['transmission']);
+  data['dimensions'] = fixDimensionsData(data['dimensions']);
+  
   data['description'] = null;
+
   console.log(data)
 }
 
