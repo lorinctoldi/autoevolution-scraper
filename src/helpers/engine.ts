@@ -1,65 +1,83 @@
-import endingError from "./error";
 import fixUndefined from "./undefined";
 import deleteUnused from "./unused";
 
 const BASE_ENGINE = {
   cylinders: null,
   displacement: null,
-  power: null,
-  torque: null,
-  'fuel system': null,
+  power: {
+    kw: null,
+    hp: null,
+    bhp: null,
+  },
+  torque: {
+    "lb-ft": null,
+    nm: null,
+  },
+  "fuel system": null,
   fuel: null,
-  'fuel capacity': null
-}
+  "fuel capacity": {
+    gallons: null,
+    liter: null,
+  },
+};
 
 const fixEngineData = (data: any) => {
-  if(!data) return BASE_ENGINE;
+  if (!data) return BASE_ENGINE;
   data = fixUndefined(data, BASE_ENGINE);
 
-  data["power"] = fixPower(data["power"]);
-  data["torque"] = fixTorque(data["torque"]);
+  data.displacement = fixDisplacement(data.displacement);
+  data.power = fixPower(data.power);
+  data.torque = fixTorque(data.torque);
   data["fuel capacity"] = fixFuelCapacity(data["fuel capacity"]);
 
   deleteUnused(data, BASE_ENGINE);
   return data;
 };
 
-const fixPower = (text: string | null): string[] | null => {
-  if (!text) return null;
+const fixDisplacement = (text: string): number | null => {
+  if(!text) return null;
 
-  const regex = / @ - rpm|@ -? ?\d+(?:-\d+)? rpm/gi;
-  const values = text
-    .split(regex)
-    .map((value: string) => value.trim())
-    .filter(Boolean);
+  return parseFloat(text.match(/\d+(?:[.,]\d+)?\s*cm3/g)?.[0] || "") || null;
+}
 
-  const error = endingError(values, [" kw", " hp", " bhp"]);
-  return error ? null : values;
+const fixPower = (text: string | null): {} => {
+  if (!text) return BASE_ENGINE.power;
+
+  const kw = parseFloat(text.match(/\d+(?:[.,]\d+)?\s*kw/g)?.[0] || "") || null;
+  const hp = parseFloat(text.match(/\d+(?:[.,]\d+)?\s*hp/g)?.[0] || "") || null;
+  const bhp =
+    parseFloat(text.match(/\d+(?:[.,]\d+)?\s*bhp/g)?.[0] || "") || null;
+
+  return {
+    kw: kw,
+    hp: hp,
+    bhp: bhp,
+  };
 };
 
-const fixTorque = (text: string | null): string[] | null => {
-  if (!text) return null;
+const fixTorque = (text: string | null): {} => {
+  if (!text) return BASE_ENGINE.torque;
 
-  const regex = / @ - rpm|@ -? ?\d+(?:-\d+)? rpm/gi;
-  const values = text
-    .split(regex)
-    .map((value: string) => value.trim())
-    .filter(Boolean);
+  const lb_ft =
+    parseFloat(text.match(/\d+(?:[.,]\d+)?\s*lb-ft/g)?.[0] || "") || null;
+  const nm = parseFloat(text.match(/\d+(?:[.,]\d+)?\s*nm/g)?.[0] || "") || null;
 
-  const error = endingError(values, [" lb-ft", " nm"]);
-
-  return error ? null : values;
+  return {
+    'lb-ft': lb_ft,
+    nm: nm,
+  };
 };
 
-const fixFuelCapacity = (text: string | null): string[] | null => {
-  if (!text) return null;
-  const litre = text.match(/(\d+\.\d+ l)/g)?.[0].replace("l", "litre") || "";
-  const gallon = text.match(/\d+\.\d gallons/g)?.[0] || "";
-  const values = [gallon, litre].filter(Boolean);
+const fixFuelCapacity = (text: string | null): {} => {
+  if (!text) return BASE_ENGINE["fuel capacity"];
 
-  const error = endingError(values, [" litre", " gallons"]);
+  const liter = parseFloat(text.match(/\d+(?:[.,]\d+)?\s*l/g)?.[0] || "") || null
+  const gallons = parseFloat(text.match(/\d+(?:[.,]\d+)?\s*gallons/g)?.[0] || "") || null
 
-  return error ? null : values;
+  return {
+    gallons: gallons,
+    liter: liter,
+  };
 };
 
 export default fixEngineData;
