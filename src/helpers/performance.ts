@@ -13,7 +13,7 @@ const fixPerformanceData = (data: any) => {
   if(!data) return BASE_PERFORMANCE;
   data = fixUndefined(data, BASE_PERFORMANCE);
   
-  data['top speed'] = fixTopSpeed(data['top speed']);
+  data['top speed'] = fixTopSpeed(data['top speed'] || data['top speed (electrical)']);
   data['acceleration'] = fixAcceleration(data['acceleration 0-62 mph (0-100 kph)'])
 
   data = deleteUnused(data, BASE_PERFORMANCE);
@@ -38,6 +38,5 @@ const fixAcceleration = (text: string | null): number | null => {
 
   return parseFloat(text.match(/\d+(?:[.,]\d+)?\s*s/g)?.[0] || "") || null;
 }
-
 
 export default fixPerformanceData

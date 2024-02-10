@@ -1,0 +1,115 @@
+{
+  "description": null,
+  "engine": {
+    "cylinders": "v8",
+    "displacement": 3000,
+    "power": {
+      "kw": 373,
+      "hp": 507,
+      "bhp": 500
+    },
+    "torque": {
+      "lb-ft": 296,
+      "nm": 401
+    },
+    "fuel system": "sequential port fuel injection",
+    "fuel": "gasoline",
+    "fuel capacity": {
+      "gallons": null,
+      "liter": null
+    }
+  },
+  "performance": {
+    "top speed": {
+      "mph": 200,
+      "kmh": 322
+    },
+    "acceleration": 2.5
+  },
+  "transmission": {
+    "drive type": "rear wheel drive",
+    "gearbox": {
+      "type": "sequential",
+      "gears": 6
+    }
+  },
+  "brakes": {
+    "front": "290mm ventilated crescent grooved discs, 4 piston calipers",
+    "rear": "290mm ventilated crescent grooved discs, 4 piston calipers"
+  },
+  "tires": {
+    "tire size": "205/50r15 || 245/45r16"
+  },
+  "dimensions": {
+    "length": {
+      "millimeter": 3696,
+      "inch": 145.5,
+      "feet": 12.1,
+      "meter": 3.7,
+      "centimeter": 369.6
+    },
+    "width": {
+      "millimeter": 1849,
+      "inch": 72.8,
+      "feet": 6.1,
+      "meter": 1.8,
+      "centimeter": 184.9
+    },
+    "height": {
+      "millimeter": 1194,
+      "inch": 47,
+      "feet": 3.9,
+      "meter": 1.2,
+      "centimeter": 119.4
+    },
+    "wheelbase": {
+      "millimeter": 2344,
+      "inch": 92.3,
+      "feet": 7.7,
+      "meter": 2.3,
+      "centimeter": 234.4
+    },
+    "front track": {
+      "millimeter": 1600,
+      "inch": 63,
+      "feet": 5.2,
+      "meter": 1.6,
+      "centimeter": 160
+    },
+    "rear track": {
+      "millimeter": 1600,
+      "inch": 63,
+      "feet": 5.2,
+      "meter": 1.6,
+      "centimeter": 160
+    },
+    "ground clearance": null,
+    "cargo volume": null,
+    "turning circle": null,
+    "aerodynamics": "0.4"
+  },
+  "weight": {
+    "unladen weight": {
+      "lbs": 1213,
+      "kg": 550
+    },
+    "gross weight limit": null
+  },
+  "fuel economy": {
+    "combined": {
+      "mpg": 33,
+      "l/100km": 7.1
+    },
+    "city": null,
+    "medium": null,
+    "highway": null,
+    "extra high": null,
+    "co2 emissions": null
+  },
+  "power system": {
+    "power pack": null,
+    "nominal capacity": null,
+    "maximum capacity": null,
+    "range": null
+  }
+}
