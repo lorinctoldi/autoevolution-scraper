@@ -51,17 +51,18 @@ const getData = async (url: string) => {
 const scrape = async (url: string) => {
   const data:any = await getData(url);
 
-  data['engine'] = fixEngineData(data['engine']);
-  data['performance'] = fixPerformanceData(data['performance']);
-  data['transmission'] = fixTransmissionData(data['transmission']);
-  data['dimensions'] = fixDimensionsData(data['dimensions']);
+  data.engine = fixEngineData(data.engine);
+  data.performance = fixPerformanceData(data.performance);
+  data.transmission = fixTransmissionData(data.transmission);
+  data.dimensions = fixDimensionsData(data.dimensions);
   
   data['description'] = null;
   console.log(url)
-  console.log(data.performance)
+  console.log(data);
 }
 
-scrape('https://www.autoevolution.com/cars/audi-a4-2019.html#aeng_audi-a4-2019-35-tsfi-s-tronic-7at-150-hp');
-scrape('https://www.autoevolution.com/cars/ferrari-f8-tributo-2019.html#aeng_ferrari-f8-tributo-2019-v8-turbo-7at-720-hp');
-scrape('https://www.autoevolution.com/cars/bentley-bentayga-s-2021.html#aeng_bentley-bentayga-s-2021-40l-v8-awd-542-hp');
-scrape('https://www.autoevolution.com/cars/bmw-3-series-touring-f31-lci-2016.html#aeng_bmw-3-series-touring-f31-lci-2016-xdrive320i-6mt-184-hp');
+// scrape('https://www.autoevolution.com/cars/audi-a4-2019.html#aeng_audi-a4-2019-35-tsfi-s-tronic-7at-150-hp');
+// scrape('https://www.autoevolution.com/cars/ferrari-f8-tributo-2019.html#aeng_ferrari-f8-tributo-2019-v8-turbo-7at-720-hp');
+// scrape('https://www.autoevolution.com/cars/bentley-bentayga-s-2021.html#aeng_bentley-bentayga-s-2021-40l-v8-awd-542-hp');
+// scrape('https://www.autoevolution.com/cars/bmw-3-series-touring-f31-lci-2016.html#aeng_bmw-3-series-touring-f31-lci-2016-xdrive320i-6mt-184-hp');
+scrape('https://www.autoevolution.com/cars/volkswagen-touareg-2023.html#aeng_volkswagen-touareg-2023-30l-tdi-v6-4motion-8at-awd-231-hp');

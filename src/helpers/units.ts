@@ -1,46 +1,54 @@
-import endingError from "./error";
-
-const UNIT_REGEX = {
-  inch: /\d*\ in/g,
-  mili: /\d*\ mm/g,
-  centi: /\d*\ cm/g,
-  foot: /\d*\ ft/g,
-  meter: /\b\d+\s*m\b(?!m)/g,
-  cuft: /\d*\ cuft/g,
-  litre: /\d*\sl\b/g,
-  kg: /\d*\ kg/g,
-  lbs: /\d*\slbs\b/g,
-};
-
-const DOUBLE_REGEX= {
-  inch_double: /\d+(?:\.\d+)?\/\d+(?:\.\d+)? in/g,
-  mili_double: /\d+(?:\,\d+)?\/\d+(?:\,\d+)? mm/g,
-  centi_double: /\d+(?:\,\d+)?\/\d+(?:\,\d+)? cm/g,
-  foot_double: /\d+(?:\.\d+)?\/\d+(?:\.\d+)? ft/g,
-  meter_double: /\d+(?:\.\d+)?\/\d+(?:\.\d+)? m(?!m)/g,
-  cuft_double: /\d+(?:\.\d+)?\/\d+(?:\.\d+)? cuft/g,
-  litre_double: /\d+(?:\,\d+)?\/\d+(?:\,\d+)? l/g,
-  kg_double: /\d+(?:\,\d+)?\/\d+(?:\,\d+)? kg/g,
-  lbs_double: /\d+(?:\,\d+)?\/\d+(?:\,\d+)? lbs/g,
-}
-
-const UNIT_ENDINGS = [" in", " m", " mm", " m", " l", " ft", " cuft", " foot", " liter", " litre", " inch", " milimeter", " meter", " lbs", " kg"]
-
-const fixUnitsData = (text: string, single:boolean = true): string[] | null => {
+const getLengthUnits = (text:string): {} | null => {
   if(!text) return null;
-
-  const values:string[] = [];
-  
-  for(let regex of Object.values(single ? UNIT_REGEX : DOUBLE_REGEX)) {
-    if(regex.test(text)) {
-      const matchedValue = text.match(regex)?.[0] || '';
-      values.push(matchedValue);
-    }
+  return {
+    milimeter: parseFloat(text.match(/\d+(?:[.,]\d+)?\s*mm/g)?.[0] || "") || null,
+    inch: parseFloat(text.match(/\d+(?:[.,]\d+)?\s*in/g)?.[0] || "") || null,
+    feet: parseFloat(text.match(/\d+(?:[.,]\d+)?\s*ft/g)?.[0] || "") || null,
+    meter: parseFloat(text.match(/\d+(?:[.,]\d+)?\s*m\b/g)?.[0] || "") || null,
+    centimeter: parseFloat(text.match(/\d+(?:[.,]\d+)?\s*cm/g)?.[0] || "") || null,
   }
-
-  const error = endingError(values, UNIT_ENDINGS);
-
-  return error ? null : values;
 }
 
-export default fixUnitsData;
+const getCubicUnits = (text:string): {} | null => {
+  if(!text) return null;
+  return {
+    cuft: parseFloat(text.match(/\d+(?:[.,]\d+)?\s*cuft/g)?.[0] || "") || null,
+    liter: parseFloat(text.match(/\d+(?:[.,]\d+)?\s*l/g)?.[0] || "") || null,
+    cm3: parseFloat(text.match(/\d+(?:[.,]\d+)?\s*m3/g)?.[0] || "") || null,
+    dm3: parseFloat(text.match(/\d+(?:[.,]\d+)?\s*dm3/g)?.[0] || "") || null,
+    m3: parseFloat(text.match(/\d+(?:[.,]\d+)?\s*m3/g)?.[0] || "") || null,
+  }
+}
+
+const getTrackUnits = (text:string | null): Record<string, any> | null => {
+  if(!text) return null;
+  
+  const regex = /(\d+\.?\d*)\/(\d+\.?\d*)\s*in\s*\(([\d,]+)\/([\d,]+)\s*mm\)/;
+  const matches = text.match(regex);
+
+  if (!matches) return null;
+
+  const frontInches = parseFloat(matches[1]);
+  const rearInches = parseFloat(matches[2]);
+  const frontMillimeters = parseFloat(matches[3].replace(/,/g, ''));
+  const rearMillimeters = parseFloat(matches[4].replace(/,/g, ''));
+
+  return {
+    'front track': {
+      millimeter: frontMillimeters,
+      inch: frontInches,
+      feet: null,
+      meter: null,
+      centimeter: null
+    },
+    'rear track': {
+      millimeter: rearMillimeters,
+      inch: rearInches,
+      feet: null,
+      meter: null,
+      centimeter: null,
+    }
+  };
+}
+
+export { getLengthUnits, getCubicUnits, getTrackUnits};

@@ -1,4 +1,3 @@
-import endingError from "./error";
 import fixUndefined from "./undefined";
 import deleteUnused from "./unused";
 
