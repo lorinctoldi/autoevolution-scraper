@@ -2,7 +2,7 @@ import fixUndefined from "./undefined";
 import deleteUnused from "./unused";
 import {
   getLengthUnits,
-  getCubicUnits,
+  getVolumeData,
   getTrackUnits,
 } from "./units";
 
@@ -27,7 +27,7 @@ const fixDimensionsData = (data: any) => {
   data["width"] = getLengthUnits(data["width"]);
   data["height"] = getLengthUnits(data["height"]);
   data["wheelbase"] = getLengthUnits(data["wheelbase"]);
-  data["cargo volume"] = getCubicUnits(data["cargo volume"]);
+  data["cargo volume"] = getVolumeData(data["cargo volume"]);
   data["turning circle"] = getLengthUnits(data["turning circle"]);
   data["ground clearance"] = getLengthUnits(data["ground clearance"]);
 

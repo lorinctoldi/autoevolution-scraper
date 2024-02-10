@@ -5,6 +5,7 @@ import fixEngineData from "./helpers/engine";
 import fixPerformanceData from "./helpers/performance";
 import fixTransmissionData from "./helpers/transmission";
 import fixDimensionsData from "./helpers/dimension";
+import fixWeightData from "./helpers/weight";
 
 const getData = async (url: string) => {
   try {
@@ -14,7 +15,6 @@ const getData = async (url: string) => {
     const html = res.data;
     const $ = cheerio.load(html);
 
-    // Find the first div within the div with the ID equal to the extracted part
     const firstDiv = $(`#${part}`).find('div.enginedata.engine-inline').first();
 
     const extractedData: {[key: string]: any} = {};
@@ -55,6 +55,7 @@ const scrape = async (url: string) => {
   data.performance = fixPerformanceData(data.performance);
   data.transmission = fixTransmissionData(data.transmission);
   data.dimensions = fixDimensionsData(data.dimensions);
+  data.weight = fixWeightData(data.weight);
   
   data['description'] = null;
   console.log(url)
