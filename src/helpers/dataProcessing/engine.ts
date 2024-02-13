@@ -1,18 +1,13 @@
-import fixUndefined from "./undefined";
-import deleteUnused from "./unused";
+import fixUndefined from "../general/undefined";
+import deleteUnused from "../general/unused";
 
 const BASE_ENGINE = {
   cylinders: null,
   displacement: null,
-  power: {
-    kw: null,
-    hp: null,
-    bhp: null,
-  },
-  torque: {
-    "lb-ft": null,
-    nm: null,
-  },
+  power: null,
+  'electrical motor power': null,
+  torque: null,
+  'electrical motor torque': null,
   "fuel system": null,
   fuel: null,
   "fuel capacity": {
@@ -27,7 +22,9 @@ const fixEngineData = (data: any) => {
 
   data.displacement = fixDisplacement(data.displacement);
   data.power = fixPower(data.power || data["total maximum power"]);
+  data['electrical motor power'] = fixPower(data["electrical motor power"]);
   data.torque = fixTorque(data.torque || data["total maximum torque"]);
+  data['electrical motor torque'] = fixTorque(data["electrical motor torque"]);
   data["fuel capacity"] = fixFuelCapacity(data["fuel capacity"]);
 
   deleteUnused(data, BASE_ENGINE);
@@ -40,7 +37,7 @@ const fixDisplacement = (text: string): number | null => {
   return parseFloat(text.match(/\d+(?:[.,]\d+)?\s*cm3/g)?.[0] || "") || null;
 };
 
-const fixPower = (text: string | null): {} => {
+const fixPower = (text: string | null): {} | null => {
   if (!text) return BASE_ENGINE.power;
 
   const kw = parseFloat(text.match(/\d+(?:[.,]\d+)?\s*kw/g)?.[0] || "") || null;
@@ -55,8 +52,8 @@ const fixPower = (text: string | null): {} => {
   };
 };
 
-const fixTorque = (text: string | null): {} => {
-  if (!text) return BASE_ENGINE.torque;
+const fixTorque = (text: string | null): {} | null=> {
+  if (!text) return null;
 
   const lb_ft =
     parseFloat(text.match(/\d+(?:[.,]\d+)?\s*lb-ft/g)?.[0] || "") || null;

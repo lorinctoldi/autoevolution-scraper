@@ -1,5 +1,5 @@
-import fixUndefined from "./undefined";
-import deleteUnused from "./unused";
+import fixUndefined from "../general/undefined";
+import deleteUnused from "../general/unused";
 
 import { getWeightUnits } from "./units";
 

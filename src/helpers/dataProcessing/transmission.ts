@@ -1,12 +1,9 @@
-import fixUndefined from "./undefined";
-import deleteUnused from "./unused";
+import fixUndefined from "../general/undefined";
+import deleteUnused from "../general/unused";
 
 const BASE_TRANSMISSION = {
   "drive type": null,
-  gearbox: {
-    type: null,
-    gears: null,
-  },
+  gearbox: null,
 };
 
 const fixTransmissionData = (data: any) => {

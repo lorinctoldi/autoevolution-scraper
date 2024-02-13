@@ -1,11 +1,9 @@
-import fixUndefined from "./undefined";
-import deleteUnused from "./unused";
+import fixUndefined from "../general/undefined";
+import deleteUnused from "../general/unused";
 
 const BASE_PERFORMANCE = {
-  "top speed": {
-    mph: null,
-    kmh: null,
-  },
+  "top speed": null,
+  "top speed electrical": null,
   acceleration: null,
 }
 
@@ -14,6 +12,7 @@ const fixPerformanceData = (data: any) => {
   data = fixUndefined(data, BASE_PERFORMANCE);
   
   data['top speed'] = fixTopSpeed(data['top speed'] || data['top speed (electrical)']);
+  data['top speed electrical'] = fixTopSpeed(data['top speed (electrical)']);
   data['acceleration'] = fixAcceleration(data['acceleration 0-62 mph (0-100 kph)'])
 
   data = deleteUnused(data, BASE_PERFORMANCE);
@@ -21,8 +20,8 @@ const fixPerformanceData = (data: any) => {
   return data
 }
 
-const fixTopSpeed = (text: string | null): {} => {
-  if(!text) return BASE_PERFORMANCE["top speed"];
+const fixTopSpeed = (text: string | null): {} | null => {
+  if(!text) return null;
 
   const mph = parseFloat(text.match(/\d+(?:[.,]\d+)?\s*mph/g)?.[0] || "") || null;
   const kmh = parseFloat(text.match(/\d+(?:[.,]\d+)?\s*km\/h/g)?.[0] || "") || null;
