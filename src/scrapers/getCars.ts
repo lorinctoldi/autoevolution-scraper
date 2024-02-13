@@ -33,13 +33,14 @@ const scrape = async (url: string) => {
 
     const firstDiv = $(`#${part}`).find("div.enginedata.engine-inline").first();
 
+    
     const data: { [key: string]: any } = {};
-
+    
     const description = $("div.fl.newstext p")
-      .map((index, element) => $(element).text().trim())
-      .get()
-      .filter(Boolean);
-
+    .map((index, element) => $(element).text().trim())
+    .get()
+    .filter(Boolean);
+    
     data["description"] = description;
 
     firstDiv.find("table").each((index, tableElement) => {
